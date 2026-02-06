@@ -1,0 +1,23 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu
+    volumes:
+      - ..:/workspace:cached
+    working_dir: /workspace
+    network_mode: service:backend
+    command: sleep infinity
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    volumes:
+      - ../backend:/workspace:cached
+    working_dir: /workspace
+    command: air
+  frontend:
+    image: mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
+    volumes:
+      - ../frontend:/workspace:cached
+    working_dir: /workspace
+    network_mode: service:backend
+    command: npm run dev
