@@ -13,11 +13,11 @@ services:
     volumes:
       - ../backend:/workspace:cached
     working_dir: /workspace
-    command: air
+    command: /bin/sh -c 'go mod tidy && air'
   frontend:
     image: mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm
     volumes:
       - ../frontend:/workspace:cached
     working_dir: /workspace
     network_mode: service:backend
-    command: npm run dev
+    command: /bin/sh -c 'npm install && npm run dev'

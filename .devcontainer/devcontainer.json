@@ -40,10 +40,10 @@
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": {
-		"backend": "cd backend && go mod tidy",
-		"frontend": "cd frontend && npm install"
-	},
+	// "postCreateCommand": {
+	// 	"backend": "cd backend && go mod tidy",
+	// 	"frontend": "cd frontend && npm install"
+	// },
 
 	// Configure tool-specific properties.
 	"customizations": {
