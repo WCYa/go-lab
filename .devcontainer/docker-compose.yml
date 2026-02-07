@@ -20,4 +20,5 @@ services:
       - ../frontend:/workspace:cached
     working_dir: /workspace
     network_mode: service:backend
+    user: node
     command: /bin/sh -c 'npm install && npm run dev'
