@@ -1,50 +1,54 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import JsonTester from "./pages/JsonTester";
+import XmlTester from "./pages/XmlTester";
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [message, setMessage] = useState('')
-  const [reloadFlag, setReloadFlag] = useState(0)
+  const [message, setMessage] = useState("");
+  const [reloadFlag, setReloadFlag] = useState(0);
 
   useEffect(() => {
-    fetch('/api/ping')
+    fetch("/api/ping")
       .then((res) => res.json())
       .then((data) => setMessage(data.message))
-      .catch((err) => console.error(err))
-  }, [reloadFlag])
+      .catch((err) => console.error(err));
+  }, [reloadFlag]);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <div className="card">
-        <button onClick={() => setReloadFlag((reloadFlag) => reloadFlag + 1)}>
+      <div className="max-w-sm mx-auto p-6 bg-white rounded-xl shadow-md space-y-4">
+        <button
+          onClick={() => setReloadFlag((reloadFlag) => reloadFlag + 1)}
+          className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition-colors"
+        >
           Retry Connection: {reloadFlag} times
         </button>
-        <p>Backend Status: {message}</p>
+
+        <p className="text-gray-700 font-medium">Backend Status: {message}</p>
       </div>
+      <BrowserRouter>
+        <nav className="p-4 bg-gray-100 space-x-4">
+          <Link to="/json" className="text-blue-500 hover:underline">
+            JSON Tester
+          </Link>
+          <Link to="/xml" className="text-green-500 hover:underline">
+            XML Tester
+          </Link>
+        </nav>
+
+        <div className="p-4">
+          <Routes>
+            <Route path="/json" element={<JsonTester />} />
+            <Route path="/xml" element={<XmlTester />} />
+            <Route
+              path="*"
+              element={<div>Welcome! Choose a tester above.</div>}
+            />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
