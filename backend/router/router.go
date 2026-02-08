@@ -29,6 +29,7 @@ func SetupRouter() *gin.Engine {
 			l.GET("/someJSON", learning.AsciiJSON)
 			l.POST("/bindBodyOnce", learning.BindBodyOnlyOnce)
 			l.POST("/bindBodyMultiple", learning.BindBodyMultipleTimes)
+			l.POST("/BindDefaultsForForm", learning.BindDefaultsForForm)
 		}
 	}
 
