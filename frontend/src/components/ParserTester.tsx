@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 interface ParserTesterProps {
-  defaultType?: "json" | "xml";
+  defaultType?: "json" | "xml" | "form";
 }
 
-type ParsedResult = object | XMLDocument | null;
+type ParsedResult = object | XMLDocument | string | null;
 
 const ParserTester: React.FC<ParserTesterProps> = ({
   defaultType = "json",
 }) => {
+  const [apiUrl, setApiUrl] = useState<string>("/api/learning/bindBodyMultiple");
   const [input, setInput] = useState<string>("");
   const [parsedResult, setParsedResult] = useState<ParsedResult>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [responseData, setResponseData] = useState<object | null>(null);
+
+  useEffect(() => {
+    if (defaultType === "form") {
+    setParsedResult("name=WCYa&addresses=baba&addresses=papa");
+    setApiUrl("/api/learning/BindDefaultsForForm")
+  }
+  }, [defaultType]);
 
   const handleParse = () => {
     setError(null);
@@ -45,6 +54,8 @@ const ParserTester: React.FC<ParserTesterProps> = ({
           setError("Unknown error");
         }
       }
+    } else if (defaultType === "form") {
+      setParsedResult(input);
     }
   };
 
@@ -52,19 +63,25 @@ const ParserTester: React.FC<ParserTesterProps> = ({
     setLoading(true);
     setError(null);
     try {
-      let data: ParsedResult | string = parsedResult;
+      let data: ParsedResult = parsedResult;
+      let type: string = "application/json";
       if (defaultType === "xml") {
+        type = "application/xml";
         if (parsedResult instanceof XMLDocument) {
           data = new XMLSerializer().serializeToString(parsedResult);
         } else {
           data = null;
         }
+      } else if (defaultType === "form") {
+        type = "application/x-www-form-urlencoded";
       }
-      const res = await axios.post("/api/learning/bindBodyMultiple", data, {
+      const res = await axios.post(apiUrl, data,
+        {
         headers: {
-          "Content-Type": `application/${defaultType}`,
+          "Content-Type": type,
         },
       });
+      setResponseData(res.data);
       alert("Response: " + JSON.stringify(res.data));
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
@@ -81,6 +98,18 @@ const ParserTester: React.FC<ParserTesterProps> = ({
 
   return (
     <div className="space-y-4">
+      <input
+        list="api-options"
+        className="w-full p-2 border border-gray-300 rounded"
+        value={apiUrl}
+        onChange={(e) => setApiUrl(e.target.value)}
+        placeholder="Enter or select API URL..."
+      />
+      <datalist id="api-options">
+        <option value="/api/learning/bindBodyOnce"></option>
+        <option value="/api/learning/bindBodyMultiple"></option>
+        <option value="/api/learning/BindDefaultsForForm"></option>
+      </datalist>
       <textarea
         className="w-full h-48 p-2 border border-gray-300 rounded"
         value={input}
@@ -110,6 +139,12 @@ const ParserTester: React.FC<ParserTesterProps> = ({
               ? new XMLSerializer().serializeToString(parsedResult)
               : JSON.stringify(parsedResult, null, 2)}
           </pre>
+        </div>
+      )}
+      {responseData && (
+        <div className="bg-gray-100 p-2 rounded overflow-auto max-h-64">
+          <h3 className="font-semibold mb-1">Response Data:</h3>
+          <pre>{JSON.stringify(responseData, null, 2)}</pre>
         </div>
       )}
     </div>

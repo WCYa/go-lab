@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import JsonTester from "./pages/JsonTester";
 import XmlTester from "./pages/XmlTester";
+import FormTester from "./pages/FormTester";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -34,12 +35,16 @@ function App() {
           <Link to="/xml" className="text-green-500 hover:underline">
             XML Tester
           </Link>
+          <Link to="/form" className="text-red-500 hover:underline">
+            Form Tester
+          </Link>
         </nav>
 
         <div className="p-4">
           <Routes>
             <Route path="/json" element={<JsonTester />} />
             <Route path="/xml" element={<XmlTester />} />
+            <Route path="/form" element={<FormTester />} />
             <Route
               path="*"
               element={<div>Welcome! Choose a tester above.</div>}
