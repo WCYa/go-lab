@@ -109,6 +109,9 @@ const ParserTester: React.FC<ParserTesterProps> = ({
         <option value="/api/learning/bindBodyOnce"></option>
         <option value="/api/learning/bindBodyMultiple"></option>
         <option value="/api/learning/BindDefaultsForForm"></option>
+        <option value="/api/learning/BindFormToCustomStructB"></option>
+        <option value="/api/learning/BindFormToCustomStructC"></option>
+        <option value="/api/learning/BindFormToCustomStructD"></option>
       </datalist>
       <textarea
         className="w-full h-48 p-2 border border-gray-300 rounded"

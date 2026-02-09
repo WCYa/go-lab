@@ -30,6 +30,9 @@ func SetupRouter() *gin.Engine {
 			l.POST("/bindBodyOnce", learning.BindBodyOnlyOnce)
 			l.POST("/bindBodyMultiple", learning.BindBodyMultipleTimes)
 			l.POST("/BindDefaultsForForm", learning.BindDefaultsForForm)
+			l.POST("/BindFormToCustomStructB", learning.GetDataB)
+			l.POST("/BindFormToCustomStructC", learning.GetDataC)
+			l.POST("/BindFormToCustomStructD", learning.GetDataD)
 		}
 	}
 
